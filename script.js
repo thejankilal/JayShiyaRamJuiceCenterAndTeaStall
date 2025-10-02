@@ -1,15 +1,33 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const animatedElements = document.querySelectorAll(".animate");
+const navSlide = () => {
+    const burger = document.querySelector('.burger');
+    const nav = document.querySelector('.nav-links');
+    const navLinks = document.querySelectorAll('.nav-links li');
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
+    burger.addEventListener('click', () => {
+        // Toggle Nav
+        nav.classList.toggle('nav-active');
+        
+        // Animate Links
+        navLinks.forEach((link, index) => {
+            if (link.style.animation) {
+                link.style.animation = '';
+            } else {
+                link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+            }
+        });
+
+        // Burger Animation
+        burger.classList.toggle('toggle');
     });
-  }, {
-    threshold: 0.2
-  });
 
-  animatedElements.forEach((el) => observer.observe(el));
-});
+    // Close the menu when a link is clicked
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('nav-active');
+            burger.classList.remove('toggle');
+            navLinks.forEach(item => item.style.animation = '');
+        });
+    });
+};
+
+navSlide();
